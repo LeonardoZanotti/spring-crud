@@ -4,12 +4,15 @@
  */
 package com.leonardozanotti.springcrud.service;
 
+import com.leonardozanotti.springcrud.entity.Product;
 import com.leonardozanotti.springcrud.repository.ProductRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -34,20 +37,20 @@ public class ProductService {
     }
     
     public Product getProductById(int productId) {
-        return repository.findById(productId).orElse(other: null);
+        return repository.findById(productId).orElse(null);
     }
     
     public Product getProductByName(String productName) {
-        return repository.findByName(productName).orElse(other: null);
+        return repository.findByName(productName);
     }
     
-    public String deleteProduct(int productId) {
+    public Map<String, String> deleteProduct(int productId) {
         repository.deleteById(productId);
-        return "Product removed successfully " + productId;
+        return Collections.singletonMap("response", "Product removed successfully: " + productId);
     }
     
     public Product updateProduct(Product product) {
-        Product existingProduct = repository.findById(product.getId()).orElse(other: null);
+        Product existingProduct = repository.findById(product.getId()).orElse(null);
         existingProduct.setName(product.getName());
         existingProduct.setQuantity(product.getQuantity());
         existingProduct.setPrice(product.getPrice());
